@@ -1,3 +1,3 @@
-TOKEN = "PUT HERE OR GET FROM DB"
-ADMIN = 387393551 #your telegram ID
+TOKEN = "1068986126:AAG2gLt-iljEQUeuMBRWkkL5qd5POdA1fNo"
+ADMIN = 448415364 #your telegram ID
 STATS = "../stats.json"
