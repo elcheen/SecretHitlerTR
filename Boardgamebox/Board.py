@@ -13,7 +13,7 @@ class Board(object):
         self.previous = []
    
     def print_board(self, player_sequence):
-        board = "--- Actas Liberales ---\n"
+        board = "--- Liberal Tablosu ---\n"
         for i in range(5):
             if i < self.state.liberal_track:
                 board += u"\u2716\uFE0F" + " " #X
@@ -21,7 +21,7 @@ class Board(object):
                 board += u"\U0001F54A" + " " #dove
             else:
                 board += u"\u25FB\uFE0F" + " " #empty
-        board += "\n--- Actas Fascistas ---\n"
+        board += "\n--- Faşist Tablosu ---\n"
         for i in range(6):
             if i < self.state.fascist_track:
                 board += u"\u2716\uFE0F" + " " #X
@@ -40,14 +40,14 @@ class Board(object):
                 elif action == "choose":
                     board += u"\U0001F454" + " " # tie
 
-        board += "\n--- Contador de elección ---\n"
+        board += "\n--- Reddedilen Seçimler ---\n"
         for i in range(3):
             if i < self.state.failed_votes:
                 board += u"\u2716\uFE0F" + " " #X
             else:
                 board += u"\u25FB\uFE0F" + " " #empty
 
-        board += "\n--- Orden Presidencial  ---\n"        
+        board += "\n--- Başkanlık Sırası  ---\n"        
         for player in player_sequence:
             nombre = player.name.replace("_", " ")
             if self.state.nominated_president == player:
@@ -56,11 +56,11 @@ class Board(object):
                 board += nombre + " " + u"\u27A1\uFE0F" + " "
         board = board[:-3]
         board += u"\U0001F501"
-        board += "\n\nHay " + str(len(self.policies)) + " politicas restantes en el mazo de politicas."
+        board += "\n\nToplamda destede " + str(len(self.policies)) + " yasa kartı kaldı."
         if self.state.fascist_track >= 3:
-            board += "\n\n" + u"\u203C\uFE0F" + " Cuidado: Si Hitler es elegido como Canciller los fascistas ganan el juego! " + u"\u203C\uFE0F"
+            board += "\n\n" + u"\u203C\uFE0F" + " Dikkat: Eğer Hitler olan kişi Şansölye seçilirse, Faşistler otomatik oyunu kazanacak! " + u"\u203C\uFE0F"
         if len(self.state.not_hitlers) > 0:
-            board += "\n\nSabemos que los siguientes jugadores no son Hitler porque fueron elegidos Canciller despues de 3 politicas fascistas:\n"
+            board += "\n\n Aşağıdaki oyuncuların Hitler olmadığını biliyoruz. Çünkü 3 Faşist yasa kartı tabloya koyulduktan sonra Şansölye olarak seçildiler:\n"
             for nh in self.state.not_hitlers:
                 board += nh.name + ", "
             board = board[:-2]
