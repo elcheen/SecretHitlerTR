@@ -137,7 +137,7 @@ def command_rules(update: Update, context: CallbackContext):
 def command_ping(update: Update, context: CallbackContext):
 	bot = context.bot
 	cid = update.message.chat_id
-	bot.send_message(cid, 'pong - v0.3')
+	bot.send_message(cid, 'Hitler!! - \u2620')
 
 
 def get_stat_query(query, partidas_totales, partidas_fascista, partidas_hitler, partidas_liberal, partidas_murio, partidas_fascista_gano, partidas_hitler_gano, partidas_liberal_gano):
@@ -253,7 +253,7 @@ def command_help(update: Update, context: CallbackContext):
 	bot = context.bot
 	args = context.args
 	cid = update.message.chat_id
-	help_text = "Los siguientes comandos están disponibles:\n"
+	help_text = "Aşağıdaki komutlar kullanılabilir:\n"
 	for i in commands:
 		help_text += i + "\n"
 	bot.send_message(cid, help_text)
@@ -267,12 +267,12 @@ def command_newgame(update: Update, context: CallbackContext):
 		game = get_game(cid)
 		groupType = update.message.chat.type
 		if groupType not in ['group', 'supergroup']:
-			bot.send_message(cid, "Tienes que agregarme a un grupo primero y escribir /newgame allá!")
+			bot.send_message(cid, "Beni bir gruba eklemeli ve yeni bir oyun oluşturmak için /yenioyun yazmalısın!")
 		elif game:
-			bot.send_message(cid, "Hay un juego comenzado en este chat. Si quieres terminarlo escribe /cancelgame!")
+			bot.send_message(cid, "Şu anda başlamış bir oyun var. Sonlandırmak istiyorsanız, lütfen /oyuniptal yazın!")
 		else:
 			GamesController.games[cid] = Game(cid, update.message.from_user.id, groupName)
-			bot.send_message(cid, "Nuevo juego creado! Cada jugador debe unirse al juego con el comando /join.\nEl iniciador del juego (o el administrador) pueden unirse tambien y escribir /startgame cuando todos se hayan unido al juego!")
+			bot.send_message(cid, "Yeni oyun oluşturuldu! Oyuna katılmak için /katil yaz.\nBu oyunu kuran kişi (veya yönetici) herkes oyuna katıldığında /oyunubaslat yazarak oyunu başlatabilir!")
 			
 	except Exception as e:
 		bot.send_message(cid, str(e))
