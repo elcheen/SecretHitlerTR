@@ -397,25 +397,25 @@ def command_votes(update: Update, context: CallbackContext):
 		if game:			
 			if not game.dateinitvote:
 				# If date of init vote is null, then the voting didnt start          
-				bot.send_message(cid, "La votación no ha comenzado todavia!")
+				bot.send_message(cid, "Oylama henüz başlamadı!")
 			else:
 				#If there is a time, compare it and send history of votes.
 				start = game.dateinitvote
 				stop = datetime.datetime.now()
 				elapsed = stop - start
 				if elapsed > datetime.timedelta(minutes=5):
-					history_text = "Historial de votacion para el Presidente %s y Canciller %s:\n\n" % (game.board.state.nominated_president.name, game.board.state.nominated_chancellor.name)
+					history_text = "Başkanlık %s ve Şansölye için oy kullan %s:\n\n" % (game.board.state.nominated_president.name, game.board.state.nominated_chancellor.name)
 					for player in game.player_sequence:
 						# If the player is in the last_votes (He voted), mark him as he registered a vote
 						if player.uid in game.board.state.last_votes:
-							history_text += "%s ha votado.\n" % (game.playerlist[player.uid].name)
+							history_text += "%s oy kullandı.\n" % (game.playerlist[player.uid].name)
 						else:
-							history_text += "%s *no* ha votado.\n" % (game.playerlist[player.uid].name)
+							history_text += "%s oy *kullanmadı*.\n" % (game.playerlist[player.uid].name)
 					bot.send_message(cid, history_text, ParseMode.MARKDOWN)
 				else:
-					bot.send_message(cid, "Cinco minutos deben pasar para ver los votos") 
+					bot.send_message(cid, "Oyları görmek için 5 dakika geçmesi gerekiyor") 
 		else:
-			bot.send_message(cid, "No hay juego en este chat. Crea un nuevo juego con /newgame")
+			bot.send_message(cid, "Bu odada henüz bir oyun kurulmamış, lütfen /yenioyun ile bir oyun açın")
 	except Exception as e:
 		bot.send_message(cid, str(e))
 
@@ -424,18 +424,18 @@ def command_calltovote(update: Update, context: CallbackContext):
 	try:
 		#Send message of executing command   
 		cid = update.message.chat_id
-		#bot.send_message(cid, "Looking for history...")
+		#bot.send_message(cid, "Geçmişe bakılıyor...")
 		#Check if there is a current game 
 		game = get_game(cid)
 		if game:			
 			if not game.dateinitvote:
 				# If date of init vote is null, then the voting didnt start          
-				bot.send_message(cid, "La votación no ha comenzado todavia!")
+				bot.send_message(cid, "Oylama henüz başlamadı!")
 			else:
 				#If there is a time, compare it and send history of votes.
 				strcid = str(game.cid)
-				btns = [[InlineKeyboardButton("Ja", callback_data=strcid + "_Ja"),
-				InlineKeyboardButton("Nein", callback_data=strcid + "_Nein")]]
+				btns = [[InlineKeyboardButton("Evet", callback_data=strcid + "_Ja"),
+				InlineKeyboardButton("Hayır", callback_data=strcid + "_Nein")]]
 				voteMarkup = InlineKeyboardMarkup(btns)
 				
 				start = game.dateinitvote
@@ -447,7 +447,7 @@ def command_calltovote(update: Update, context: CallbackContext):
 					for player in game.player_sequence:
 						# If the player is not in last_votes send him reminder
 						if player.uid not in game.board.state.last_votes:
-							history_text += "Es hora de votar [%s](tg://user?id=%d)!\n" % (game.playerlist[player.uid].name, player.uid)
+							history_text += "Oy verme vakti [%s](tg://user?id=%d)!\n" % (game.playerlist[player.uid].name, player.uid)
 							groupName = "*En el grupo {}*\n".format(game.groupName)
 							msg = "{}Quieres elegir al Presidente *{}* y al canciller *{}*?".format(groupName, game.board.state.nominated_president.name, game.board.state.nominated_chancellor.name)
 							bot.send_message(player.uid, msg, reply_markup=voteMarkup, parse_mode=ParseMode.MARKDOWN)
