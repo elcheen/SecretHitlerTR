@@ -335,7 +335,7 @@ def command_join(update: Update, context: CallbackContext):
 			save_game(cid, "Game in join state", game)
 		except Exception:
 			bot.send_message(game.cid,
-				fname + ", Sana özelden mesaj gönderemiyorum. Lütfen bu @SecretHitlerTurkbot botu \"Başlat\".\nDaha sonra tekrar /katil yazarak katılabilirsin.")
+				fname + ", Sana özelden mesaj gönderemiyorum. Lütfen bu @SecretHitlerTRbot botu \"Başlat\".\nDaha sonra tekrar /katil yazarak katılabilirsin.")
 
 
 def command_startgame(update: Update, context: CallbackContext):
