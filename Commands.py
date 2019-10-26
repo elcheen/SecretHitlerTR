@@ -453,9 +453,9 @@ def command_calltovote(update: Update, context: CallbackContext):
 							bot.send_message(player.uid, msg, reply_markup=voteMarkup, parse_mode=ParseMode.MARKDOWN)
 					bot.send_message(cid, text=history_text, parse_mode=ParseMode.MARKDOWN)
 				else:
-					bot.send_message(cid, "Cinco minutos deben pasar para pedir que se vote!") 
+					bot.send_message(cid, "Oylama çağrısı göndermek için 5 dakika geçmesi gerekir") 
 		else:
-			bot.send_message(cid, "No hay juego en este chat. Crea un nuevo juego con /newgame")
+			bot.send_message(cid, "Bu odada henüz bir oyun kurulmamış, lütfen /yenioyun ile bir oyun açın")
 	except Exception as e:
 		bot.send_message(cid, str(e))
         
@@ -485,9 +485,9 @@ def command_showhistory(update: Update, context: CallbackContext):
 			bot.send_message(uid, history_text, ParseMode.MARKDOWN)
 			if len(history_textContinue) > 0:
 				bot.send_message(uid, history_textContinue, ParseMode.MARKDOWN)
-			#bot.send_message(cid, "I sent you the history to our private chat")			
+			#bot.send_message(cid, "Sana özel sohbetten geçmişi gönderdim")			
 		else:
-			bot.send_message(cid, "No hay juego en este chat. Crea un nuevo juego con /newgame")
+			bot.send_message(cid, "Bu odada henüz bir oyun kurulmamış, lütfen /yenioyun ile bir oyun açın")
 	except Exception as e:
 		bot.send_message(cid, str(e))
 		log.error("Unknown error: " + str(e))  
@@ -513,7 +513,7 @@ def command_claim(update: Update, context: CallbackContext):
 						game.history.append("%s" % (claimtexttohistory))
 						save_game(cid, "Game in join state", game)
 					else:					
-						bot.send_message(cid, "Debes mandar un mensaje para hacer una declaración.")
+						bot.send_message(cid, "Açıklama yapmak için bir mesaj göndermelisiniz.")
 
 				else:
 					bot.send_message(cid, "No puedes hacer sin promulgar al menos una política.")
@@ -521,7 +521,7 @@ def command_claim(update: Update, context: CallbackContext):
 				bot.send_message(cid, "Debes ser un jugador del partido para declarar algo.")
 				
 		else:
-			bot.send_message(cid, "No hay juego en este chat. Crea un nuevo juego con /newgame")
+			bot.send_message(cid, "Bu odada henüz bir oyun kurulmamış, lütfen /yenioyun ile bir oyun açın")
 	except Exception as e:
 		bot.send_message(cid, str(e))
 		log.error("Unknown error: " + str(e))    
@@ -561,7 +561,7 @@ def command_claim_oculto(update: Update, context: CallbackContext):
 def save_game(cid, groupName, game):
 	#Check if game is in DB first
 	cur = conn.cursor()			
-	log.info("Searching Game in DB")
+	log.info("Oyun Veritabanında araştırlıyor")
 	query = "select * from games where id = %s;"
 	cur.execute(query, [cid])
 	dbdata = cur.fetchone()
