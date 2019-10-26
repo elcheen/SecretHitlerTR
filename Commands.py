@@ -129,9 +129,10 @@ def command_start(update: Update, context: CallbackContext):
 	command_help(bot, update)
 
 
-def command_rules(bot, update):
-    cid = update.message.chat_id
-    btn = [[InlineKeyboardButton("Kurallar", url="https://docdro.id/Q7TBl1Z")]]
+def command_rules(update: Update, context: CallbackContext):
+	bot = context.bot
+	cid = update.message.chat_id	
+	btn = [[InlineKeyboardButton("Kurallar", url="https://docdro.id/Q7TBl1Z")]]
     rulesMarkup = InlineKeyboardMarkup(btn)
     bot.send_message(cid, "Resmi Secret Hitler Kurallarını Okuyun:", reply_markup=rulesMarkup)
 
