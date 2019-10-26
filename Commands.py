@@ -820,7 +820,7 @@ def command_choose_posible_role(update: Update, context: CallbackContext):
 	
 def choose_posible_role(bot, cid, uid):
 	frase_regex = "chooserole"
-	pregunta_arriba_botones = "¿Qué rol quisieras ser?"
+	pregunta_arriba_botones = "Hangi rolün gelmesini isterdin?"
 	chat_donde_se_pregunta = uid
 	multipurpose_choose_buttons(bot, cid, uid, chat_donde_se_pregunta, frase_regex, pregunta_arriba_botones, opciones_choose_posible_role)
 
@@ -832,23 +832,23 @@ def callback_choose_posible_role(update: Update, context: CallbackContext):
 	cid, strcid, opcion, uid, struid = int(regex.group(1)), regex.group(1), regex.group(2), int(regex.group(3)), regex.group(3)
 	
 	# Busco el juego actual y le pongo al jugador su preferencia, solamente si el juego no empezo hago el seteo de preferencia
-	#bot.edit_message_text("Mensaje Editado: Has elegido el Rol: %s" % opcion, cid, callback.message.message_id)
+	#bot.edit_message_text("Bol şans: Seçtiğin rolün gelme olasılığı arttı: %s" % opcion, cid, callback.message.message_id)
 	mensaje_edit = ''
 	
 	game = get_game(cid)
 	
 	if game:
 		if game.board:
-			mensaje_edit = 'El juego ya comenzó, intentalo cuando el juego no haya empezado'
+			mensaje_edit = 'Oyun çoktan başladı, oyun başlamadığında dene'
 		else:
 			if uid in game.playerlist:
-				mensaje_edit = 'Mensaje Editado: Has elegido el Rol: %s' % opcion
+				mensaje_edit = 'Bol şans: Seçtiğin rolün gelme olasılığı arttı: %s' % opcion
 				game.playerlist[uid].preference_rol = opcion
 				choose_posible_role(bot, cid, uid)
 			else:
-				mensaje_edit = 'No estas unido a esta partida, intentalo cuando te hayas unido'			
+				mensaje_edit = 'Oyun çoktan başladı, oyun başlamadığında dene'			
 	else:
-		mensaje_edit = 'No hay juego creado, intentalo cuando el juego este creado'		
+		mensaje_edit = 'Oluşturulan oyun yok, oyun oluşturulduğunda deneyin'		
 	
 	try:
 		bot.edit_message_text(mensaje_edit, cid, callback.message.message_id)
