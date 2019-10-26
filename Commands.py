@@ -48,18 +48,17 @@ conn = psycopg2.connect(
 )
 
 commands = [  # command description used in the "help" command
-    '/help - Te da informacion de los comandos disponibles',
-    '/start - Da un poco de información sobre Secret Hitler',
-    '/symbols - Te muestra todos los símbolos posibles en el tablero',
-    '/rules - Te da un link al sitio oficial con las reglas de Secret Hitler',
-    '/newgame - Crea un nuevo juego o carga un juego previo',
-    '/join - Te une a un juego existente',
-    '/startgame - Comienza un juego existente cuando todos los jugadores se han unido',
-    '/cancelgame - Cancela un juego existente, todos los datos son borrados.',
-    '/board - Imprime el tablero actual con la pista liberal y la pista fascista, orden presidencial y contador de elección',
-    '/history - Imprime el historial del juego actual',
-    '/votes - Imprime quien ha votado',
-    '/calltovote - Avisa a los jugadores que se tiene que votar'    
+    '/yardim - Komutlar hakkında bilgi verir',
+    '/start - Secret Hitler hakkında kısa bilgi verir',
+    '/semboller - Tahtada görebileceğiniz sembolleri tanıtır',
+    '/kurallar - Secret Hitler oyunun kurallarının bulunduğu detaylı bir pdf linki gönderir',
+    '/yenioyun - Yeni oyun oluşturur',
+    '/katil - Mevcut bir oyuna katılır',
+    '/oyunubaslat - Mevcut katılan oyuncular ile bir oyun başlatır',
+    '/oyuniptal - Mevcut bir oyunu iptal eder. Oyunun tüm verileri yok olur',
+    '/tablo - Mevcut oyundaki Faşist ve Liberal tablosundaki ilerlemeleri gösterir',
+    '/oylar - Oy verenleri gösterir',
+    '/oyver - Oyuncuları oy kullanmaya çağırır'    
 ]
 
 symbols = [
