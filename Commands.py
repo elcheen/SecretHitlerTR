@@ -90,7 +90,7 @@ def get_game(cid):
 def command_symbols(update: Update, context: CallbackContext):
 	bot = context.bot
 	cid = update.message.chat_id
-	symbol_text = "Los siguientes símbolos aparecen en el tablero: \n"
+	symbol_text = "Tablodaki sembollerin anlamları şu şekildedir: \n"
 	for i in symbols:
 		symbol_text += i + "\n"
 	bot.send_message(cid, symbol_text)
@@ -104,9 +104,9 @@ def command_board(update: Update, context: CallbackContext):
 		if game.board:			
 			print_board(bot, game, cid)
 		else:
-			bot.send_message(cid, "No hay juego comenzado en este chat.  Por favor comience el juego con /startgame")
+			bot.send_message(cid, "Bu odada, başlamamış bir oyun mevcut. Lütfen /oyunubaslat ile oyunu başlatın")
 	else:
-		bot.send_message(cid, "No hay juego en este chat. Crea un nuevo juego con /newgame")
+		bot.send_message(cid, "Bu odada henüz bir oyun kurulmamış, lütfen /yenioyun ile bir oyun açın")
 
 def print_board(bot, game, target):
 	bot.send_message(target, game.board.print_board(game.player_sequence), ParseMode.MARKDOWN)
@@ -116,16 +116,12 @@ def command_start(update: Update, context: CallbackContext):
 
 	cid = update.message.chat_id
 	bot.send_message(cid,
-		     "\"Secret Hitler es un juego de deducción social para 5-10 jugadores "
-		     "acerca de encontrar a Hitler y detener el ascenso del fascismo."
-		     " La mayoría de los jugadores son liberales. Si pueden aprender a "
-		     "confiar entre ellos, tienen suficientes votos para controlar el parlamento y ganar el juego."
-		     " Pero algunos jugadores son fascistas. Ellos dirán lo que sea necesario para ser electos, "
-		     "promover el fascismo y culpar a los demás por la derrota de la República."
-		     " Los liberales deben trabajar juntos para descubrir la verdad antes "
-		     "de que los fascistas instalen a su desalamado líder y ganen el juego."
-		     " Traducción de la descripición oficial de Secret Hitler."
-		     " Agregame a un grupo y escribe /newgame para crear un juego!")
+		     "\"GİZLİ HİTLER’İ BULMAK ÜZERİNE KURULU, 5-10 OYUNCULU BIR TOPLU TAHMİN OYUNU.."
+                     "Yıl 1932. Yer II. Dünya Savaşı öncesinde Almanya."
+                     "Secret Hitler’de oyuncular, kırılgan bir Liberal hükümete sahip çıkarak yükselmekte olan Faşizm dalgasına karşı koymaya çalışan Alman politikacıları oynarlar."
+                     "Ama dikkat edin, aranızda gizli Faşistler var."
+                     "Hatta oyunculardan biri de Gizli Hitler."
+                     "@Capulcu ve @Holytotem 'e ait.\"\n- Resmî Secret Hitler Açıklamasıdır\n\nBeni bir gruba ekle ve yeni bir oyun oluşturmak için /yenioyun yaz!")
 	command_help(bot, update)
 
 
