@@ -62,14 +62,14 @@ commands = [  # command description used in the "help" command
 ]
 
 symbols = [
-    u"\u25FB\uFE0F" + ' Lugar vacio sin poder especial',
-    u"\u2716\uFE0F" + ' Campo cubierto con una carta',  # X
-    u"\U0001F52E" + ' Poder Presidencial: Investigar Políticas',  # crystal
-    u"\U0001F50E" + ' Poder Presidencial: Investigar Afiliación Política',  # inspection glass
-    u"\U0001F5E1" + ' Poder Presidencial: Ejecución',  # knife
-    u"\U0001F454" + ' Poder Presidencial: Llamar a Elección Especial',  # tie
-    u"\U0001F54A" + ' Liberales ganan',  # dove
-    u"\u2620" + ' Fascistas ganan'  # skull
+    u"\u25FB\uFE0F" + ' Boş alanlar bu sembolle gösterilir',
+    u"\u2716\uFE0F" + ' Kart koyulmuş alanlar bu sembolle gösterilir',  # X
+    u"\U0001F52E" + ' Cumhurbaşkanı gücü: Yasaları Görür',  # crystal
+    u"\U0001F50E" + ' Cumhurbaşkanı gücü: Parti Araştırmak',  # inspection glass
+    u"\U0001F5E1" + ' Cumhurbaşkanı gücü: İnfaz',  # knife
+    u"\U0001F454" + ' Cumhurbaşkanı gücü: Özel Seçim Yetkisi',  # tie
+    u"\U0001F54A" + ' Liberaller Kazandı!',  # dove
+    u"\u2620" + ' Faşistler Kazandı!'  # skull
 ]
 
 def get_game(cid):
