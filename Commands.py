@@ -117,11 +117,11 @@ def command_start(update: Update, context: CallbackContext):
 	cid = update.message.chat_id
 	bot.send_message(cid,
 		     "\"GİZLİ HİTLER’İ BULMAK ÜZERİNE KURULU, 5-10 OYUNCULU BIR TOPLU TAHMİN OYUNU.."
-                     "Yıl 1932. Yer II. Dünya Savaşı öncesinde Almanya."
-                     "Secret Hitler’de oyuncular, kırılgan bir Liberal hükümete sahip çıkarak yükselmekte olan Faşizm dalgasına karşı koymaya çalışan Alman politikacıları oynarlar."
-                     "Ama dikkat edin, aranızda gizli Faşistler var."
-                     "Hatta oyunculardan biri de Gizli Hitler."
-                     "@Capulcu ve @Holytotem 'e ait.\"\n- Resmî Secret Hitler Açıklamasıdır\n\nBeni bir gruba ekle ve yeni bir oyun oluşturmak için /yenioyun yaz!")
+                     " Yıl 1932. Yer II. Dünya Savaşı öncesinde Almanya."
+                     " Secret Hitler’de oyuncular, kırılgan bir Liberal hükümete sahip çıkarak yükselmekte olan Faşizm dalgasına karşı koymaya çalışan Alman politikacıları oynarlar."
+                     " Ama dikkat edin, aranızda gizli Faşistler var."
+                     " Hatta oyunculardan biri de Gizli Hitler."
+                     " @Capulcu ve @Holytotem'e ait.\"\n- Resmî Secret Hitler Açıklamasıdır\n\nBeni bir gruba ekle ve yeni bir oyun oluşturmak için /yenioyun yaz!")
 	command_help(bot, update)
 
 
@@ -302,15 +302,15 @@ def command_join(update: Update, context: CallbackContext):
 				save_game(cid, "Game in join state", game)
 	
 	if groupType not in ['group', 'supergroup']:
-		bot.send_message(cid, "Tienes que agregarme a un grupo primero y escribir /newgame allá!")
+		bot.send_message(cid, "Beni bir gruba eklemeli ve yeni bir oyun oluşturmak için /yenioyun yazmalısın!")
 	elif not game:
-		bot.send_message(cid, "No hay juego en este chat. Crea un nuevo juego con /newgame")
+		bot.send_message(cid, "Bu odada henüz bir oyun kurulmamış, lütfen /yenioyun ile bir oyun açın")
 	elif game.board:
-		bot.send_message(cid, "El juego ha comenzado. Por favor espera el proximo juego!")
+		bot.send_message(cid, "Oyun zaten başladı. Lütfen sonraki oyunu bekleyin.")
 	elif uid in game.playerlist:
-		bot.send_message(game.cid, "Ya te has unido al juego, %s!" % fname)
+		bot.send_message(game.cid, "Zaten oyuna katıldın, %s!" % fname)
 	elif len(game.playerlist) >= 10:
-		bot.send_message(game.cid, "Han llegado al maximo de jugadores. Por favor comiencen el juego con /startgame!")
+		bot.send_message(game.cid, "Maksimum oyuncu sayısına ulaştınız. Lütfen oyuna /oyunubaslat ile başlayın!")
 	else:
 		#uid = update.message.from_user.id
 		player = Player(fname, uid)
@@ -346,13 +346,13 @@ def command_startgame(update: Update, context: CallbackContext):
 	cid = update.message.chat_id
 	game = get_game(cid)
 	if not game:
-		bot.send_message(cid, "No hay juego en este chat. Crea un nuevo juego con /newgame")
+		bot.send_message(cid, "Bu odada henüz bir oyun kurulmamış, lütfen /yenioyun ile bir oyun açın")
 	elif game.board:
-		bot.send_message(cid, "El juego ya ha comenzado!")
+		bot.send_message(cid, "Oyun çoktan başladı!")
 	elif update.message.from_user.id != game.initiator and bot.getChatMember(cid, update.message.from_user.id).status not in ("administrator", "creator"):
-		bot.send_message(game.cid, "Solo el creador del juego or el admisnitrador del grupo pueden comenzar el juego con /startgame")
+		bot.send_message(game.cid, "Yalnızca bu oyunu kuran kişi (veya yönetici) /oyunubaslat ile oyunu başlatabilir")
 	elif len(game.playerlist) < 5:
-		bot.send_message(game.cid, "No hay suficientes jugadores (min. 5, max. 10). Uneté al juego con /join")
+		bot.send_message(game.cid, "Yeterli sayıda oyuncu yok (min. 5, max. 10). Oyuna /katil ile katılabilirsiniz.")
 	else:
 		player_number = len(game.playerlist)
 		MainController.inform_players(bot, game, game.cid, player_number)
@@ -382,16 +382,16 @@ def command_cancelgame(update: Update, context: CallbackContext):
 		if update.message.from_user.id == game.initiator or status in ("administrator", "creator"):
 			MainController.end_game(bot, game, 99)
 		else:
-			bot.send_message(cid, "Solo el creador del juego o el administrador del grupo pueden cancelar el juego con /cancelgame")
+			bot.send_message(cid, "Yalnızca bu oyunu kuran kişi (veya yönetici) /oyuniptal ile oyunu iptal edebilir")
 	else:
-		bot.send_message(cid, "No hay juego en este chat. Crea un nuevo juego con /newgame")
+		bot.send_message(cid, "Bu odada henüz bir oyun kurulmamış, lütfen /yenioyun ile bir oyun açın")
 
 def command_votes(update: Update, context: CallbackContext):
 	bot = context.bot
 	try:
 		#Send message of executing command   
 		cid = update.message.chat_id
-		#bot.send_message(cid, "Looking for history...")
+		#bot.send_message(cid, "Geçmişe bakılıyor...")
 		#Check if there is a current game 
 		game = get_game(cid)
 		if game:			
