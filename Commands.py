@@ -132,9 +132,23 @@ def command_start(update: Update, context: CallbackContext):
 def command_rules(update: Update, context: CallbackContext):
 	bot = context.bot
 	cid = update.message.chat_id	
-	btn = [[InlineKeyboardButton("Kurallar", url="https://docdro.id/Q7TBl1Z")]]
-    rulesMarkup = InlineKeyboardMarkup(btn)
-    bot.send_message(cid, "Resmi Secret Hitler Kurallarını Okuyun:", reply_markup=rulesMarkup)
+	msg = """En cada turno el jugador activo, *Presidente* de ahora en más, elige un jugador como su *canciller*.
+	Luego todos los jugadores votan si aceptan la formula elegida.
+	Si hay mayoria de votos *JA!* (positivos) la formula se convierte en activa.
+	En ese caso el jugador *presidente* recibe 3 cartas del mazo de politicas, este esta compuesto inicialmente por
+	*11 Politicas fascistas*
+	*6 Politicas liberales*
+	Al recibir las cartas el presidente recibirá en privado una botonera con las 3 cartas y se le pedirá que
+	*DESCARTE* una de ellas para pasar las dos restantes al canciller.
+	El canciller recibirá las dos politicas restantes y eligirá una para promulgar.
+	
+	El objetivo de los fascistas es promulgar *6 politicas fascistas* o *3 y que Hitler sea elegido canciller*.
+	EL objetivo de los liberales es promulgar *5 politicas liberales* o *Matar a Hitler*
+	
+	Si se promulga una politica fascista hay posibilidad que haya una acción para el *presidente* relacionada a ella.
+	/symbols Da un resumen de que hace cada acción.
+	"""
+	bot.send_message(cid, msg, ParseMode.MARKDOWN)
 
 
 # pings the bot
