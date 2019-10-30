@@ -322,13 +322,13 @@ def command_join(update: Update, context: CallbackContext):
 			game.add_player(uid, player)
 			log.info("%s (%d) joined a game in %d" % (fname, uid, game.cid))
 			if len(game.playerlist) > 4:
-				bot.send_message(game.cid, fname + " se ha unido al juego. Escribe /startgame si este es el último jugador y quieren comenzar con %d jugadores!" % len(game.playerlist))
+				bot.send_message(game.cid, fname + " oyuna katıldı. Oyunu %d oyuncuyla oynamak için /oyunubaslat ile oyunu başlatabilirsin" % len(game.playerlist))
 			elif len(game.playerlist) == 1:
-				bot.send_message(game.cid, "%s se ha unido al juego. Hay %d jugador en el juego y se necesita 5-10 jugadores." % (fname, len(game.playerlist)))
+				bot.send_message(game.cid, "%s oyuna katıldı. Şu anda oyunda %d oyuncu var ve 5-10 oyuncuya ihtiyacın var.." % (fname, len(game.playerlist)))
 			else:
-				bot.send_message(game.cid, "%s se ha unido al juego. Hay %d jugadores en el juego y se necesita 5-10 jugadores" % (fname, len(game.playerlist)))
+				bot.send_message(game.cid, "%s oyuna katıldı. Şu anda oyunda %d oyuncu var ve 5-10 oyuncuya ihtiyacın var.." % (fname, len(game.playerlist)))
 			# Luego dicto los jugadores que se han unido
-			jugadoresActuales = "Los jugadores que se han unido al momento son:\n"
+			jugadoresActuales = "Şu an katılan oyuncular:\n"
 			for uid in game.playerlist:
 				jugadoresActuales += "%s\n" % game.playerlist[uid].name
 			bot.send_message(game.cid, jugadoresActuales)
