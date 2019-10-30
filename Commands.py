@@ -891,7 +891,7 @@ def command_info(update: Update, context: CallbackContext):
 		if game:
 			if uid in game.playerlist:								
 				player = game.playerlist[uid]
-				msg = "--- *Info del grupo {}* ---\n".format(groupName)
+				msg = "--- *Grup bilgisi: {}* ---\n".format(groupName)
 				msg += player.get_private_info(game)
 				bot.send_message(uid, msg, ParseMode.MARKDOWN)				
 			else:
@@ -911,7 +911,7 @@ def callback_info(update: Update, context: CallbackContext):
 	
 	if uid in game.playerlist:								
 		player = game.playerlist[uid]
-		msg = "--- *Info del grupo {}* ---\n".format(game.groupName)
+		msg = "--- *Grup Bilgisi: {}* ---\n".format(game.groupName)
 		msg += player.get_private_info(game)
 		bot.send_message(uid, msg, ParseMode.MARKDOWN)				
 	else:
@@ -928,7 +928,7 @@ def command_show_stats(update: Update, context: CallbackContext):
 		jsonbeuty = json.loads(jsonStr)		
 		bot.send_message(cid, json.dumps(jsonbeuty, sort_keys=True, indent=4))
 	else:
-		bot.send_message(cid, "El usuario no tiene stats")
+		bot.send_message(cid, "Kullanıcının istatistikleri yok")
 
 def command_change_stats(update: Update, context: CallbackContext):
 	bot = context.bot
