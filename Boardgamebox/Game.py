@@ -57,7 +57,7 @@ class Game(object):
 					role = self.playerlist[p].role
 					preference_rol = self.playerlist[p].preference_rol
 					muerto = self.playerlist[p].is_dead					
-					rtext += "%s'ın rolü %idi %s, %s" % (name, "(Öldü) " if muerto else "", role, ("" if preference_rol == "" else "Olmak istediği rol de " + preference_rol))										
+					rtext += "El rol de %s %sera %s %s" % (name, "(muerto) " if muerto else "", role, ("" if preference_rol == "" else "queria ser " + preference_rol))										
 					rtext +=  "\n"
 				return rtext
 		except Exception as e:
