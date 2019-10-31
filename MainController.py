@@ -717,7 +717,7 @@ def handle_voting_anarquia(update: Update, context: CallbackContext):
 		game = Commands.get_game(cid)
 		uid = callback.from_user.id
 		answer = answer.replace("Ana", "")
-		bot.edit_message_text("Gracias por tu voto: %s para la anarquia" % (answer), uid, callback.message.message_id)
+		bot.edit_message_text("Oy verdiğiniz için teşekkürler: Anarşiye %s " % (answer), uid, callback.message.message_id)
 		log.info("Player %s (%d) voted %s" % (callback.from_user.first_name, uid, answer))
 
 		#if uid not in game.board.state.last_votes:
@@ -729,8 +729,8 @@ def handle_voting_anarquia(update: Update, context: CallbackContext):
 					game.board.state.votes_anarquia[uid] = answer			
 
 		#Allow player to change his vote
-		btns = [[InlineKeyboardButton("Ja", callback_data=strcid + "_JaAna"),
-		InlineKeyboardButton("Nein", callback_data=strcid + "_NeinAna")]]
+		btns = [[InlineKeyboardButton("Evet", callback_data=strcid + "_JaAna"),
+		InlineKeyboardButton("Hayır", callback_data=strcid + "_NeinAna")]]
 		voteMarkup = InlineKeyboardMarkup(btns)
 		bot.send_message(uid, "Puedes cambiar tu voto aquí.\n¿Quieres ir a anarquia? (CUIDADO si la mitad de los jugadores elige SI no se espera)", reply_markup=voteMarkup)
 		
@@ -753,17 +753,17 @@ def count_votes_anarquia(bot, game):
 	for player in game.player_sequence:
 		nombre_jugador = game.playerlist[player.uid].name
 		if game.board.state.votes_anarquia[player.uid] == "Si":
-			voting_text += nombre_jugador + " votó Ja!\n"
+			voting_text += nombre_jugador + " Evet oyu verdi!\n"
 		elif game.board.state.votes_anarquia[player.uid] == "No":
-			voting_text += nombre_jugador + " votó Nein!\n"
+			voting_text += nombre_jugador + " Hayır oyu verdi!\n"
 	if list(game.board.state.votes_anarquia.values()).count("Si") >= (len(game.player_sequence) / 2):  # because player_sequence doesnt include dead
 		# VOTING WAS SUCCESSFUL
-		log.info("Vamos a anarquia!")
-		voting_text += "Debido a que la mayoria de los jugador ha decidido ir a anarquia se ejecuta la anarquia."		
+		log.info("Anarşi kazandı!")
+		voting_text += "Oyuncuların çoğu anarşiye gitmeye karar verdiğinden, anarşi yürütülecek."		
 		game.board.state.nominated_president = None
 		game.board.state.nominated_chancellor = None
 		bot.send_message(game.cid, voting_text, ParseMode.MARKDOWN)
-		bot.send_message(game.cid, "\nNo se puede hablar ahora.")
+		bot.send_message(game.cid, "\nŞimdi konuşamazsın.")
 		game.history.append(("Ronda %d.%d\n\n" % (game.board.state.liberal_track + game.board.state.fascist_track + 1, game.board.state.failed_votes + 1) ) + voting_text)
 		# Avanzo la cantidad del lider asi el lider queda correctamente asignado
 		# Se incrementa como mucho 2 ya que el ultimo incremento lo hace la anarquia
@@ -771,8 +771,8 @@ def count_votes_anarquia(bot, game):
 			increment_player_counter(game)		
 		do_anarchy(bot, game)
 	else:
-		log.info("La gente no quiere anarquia")
-		voting_text += "Al no quiso ir a anarquia"
+		log.info("Halk anarşiyi istemiyor")
+		voting_text += "Halk anarşiyi istemiyor"
 		game.board.state.nominated_president = None
 		game.board.state.nominated_chancellor = None
 		bot.send_message(game.cid, voting_text, ParseMode.MARKDOWN)
@@ -892,22 +892,22 @@ def end_game(bot, game, game_endcode):
 	stats = get_stats(bot, cid)	
 	if game_endcode == 99:
 		if GamesController.games[cid].board is not None:
-			bot.send_message(cid, "Juego cancelado!\n\n%s" % game.print_roles())
+			bot.send_message(cid, "Oyun iptal edildi!\n\n%s" % game.print_roles())
 		else:
-			bot.send_message(cid, "Juego cancelado!")
+			bot.send_message(cid, "Oyun Bozuldu!")
 		set_stats("cancelgame", stats[5] + 1, bot, cid)
 	else:
 		if game_endcode == -2:
-			bot.send_message(game.cid, "Juego finalizado! Los fascistas ganaron eligiendo a Hitler como Canciller!\n\n%s" % game.print_roles())
+			bot.send_message(game.cid, "Oyun Bitti! Faşistler, Hitler’i başkan yaparak kazandılar!\n\n%s" % game.print_roles())
 			set_stats("fascistwinhitler", stats[1] + 1, bot, cid)
 		if game_endcode == -1:
-			bot.send_message(game.cid, "Juego finalizado! Los fascistas ganaron promulgando 6 políticas fascistas!\n\n%s" % game.print_roles())
+			bot.send_message(game.cid, "Oyun Bitti! Faşistler, 6 adet faşist yasası koyarak kazandı!\n\n%s" % game.print_roles())
 			set_stats("fascistwinpolicies", stats[2] + 1, bot, cid)
 		if game_endcode == 1:
-			bot.send_message(game.cid, "Juego finalizado! Los liberales ganaron promulgando 5 políticas liberales!\n\n%s" % game.print_roles())
+			bot.send_message(game.cid, "Oyun Bitti! Liberaller, 5 faşist yasası koyarak kazandı!\n\n%s" % game.print_roles())
 			set_stats("liberalwinpolicies", stats[3] + 1, bot, cid)
 		if game_endcode == 2:
-			bot.send_message(game.cid, "Juego finalizado! Los liberales ganaron matando a Hitler!\n\n%s" % game.print_roles())
+			bot.send_message(game.cid, "Oyun Bitti! Liberaller, Hitler’i vurarak kazandı!\n\n%s" % game.print_roles())
 			set_stats("liberalwinkillhitler", stats[4] + 1, bot, cid)
 		showHiddenhistory(bot, game)
 	del GamesController.games[cid]
@@ -917,7 +917,7 @@ def showHiddenhistory(bot, game):
 	#game.pedrote = 3
 	try:
 		#Check if there is a current game
-		history_text = "Historial Oculto:\n\n" 
+		history_text = "Gizli Geçmiş:\n\n" 
 		for x in game.hiddenhistory:				
 			history_text += x + "\n"
 		bot.send_message(game.cid, history_text, ParseMode.MARKDOWN)
@@ -928,7 +928,7 @@ def showHiddenhistory(bot, game):
 def inform_players(bot, game, cid, player_number):
 	log.info('inform_players called')
 	bot.send_message(cid,
-		"Vamos a comenzar el juego con %d jugadores!\n%s\nVe a nuestro chat privado y mira tu rol secreto!" % (
+		"Hadi %d oyuncu ile başlayalım!\n%s\nÖzel sohbete bak ve gizli rolünü öğren!" % (
 		player_number, print_player_info(player_number)))
 	available_roles = list(playerSets[player_number]["roles"])  # copy not reference because we need it again later
 	# Mezclo los roles asi si alguien elije Fascista o Hitler no le toca siempre Fascista
@@ -963,24 +963,24 @@ def inform_players(bot, game, cid, player_number):
 		
 		# I comment so tyhe player aren't discturbed in testing, uncomment when deploy to production
 		if not game.is_debugging:
-			bot.send_message(uid, "Tu rol secreto es: %s\nTu afiliación política es: %s" % (role, party))
+			bot.send_message(uid, "Senin gizli rolün: %s\nParti üyeliğin: %s" % (role, party))
 		else:
 			bot.send_message(ADMIN, "El jugador %s es %s y su afiliación política es: %s" % (game.playerlist[uid].name, role, party))
 
 
 def print_player_info(player_number):
     if player_number == 5:
-        return "Hay 3 Liberales, 1 Fascista y Hitler. Hitler conoce quien es el Fascista."
+        return "Oyunda 3 Liberal, 1 Faşist ve 1 Hitler var. Hitler faşistini görebilecek."
     elif player_number == 6:
-        return "Hay  4 Liberales, 1 Fascista y Hitler. Hitler conocer quienes quien es el Fascista."
+        return "Oyunda 4 Liberal, 1 Faşist ve 1 Hitler var. Hitler faşistini görebilecek."
     elif player_number == 7:
-        return "Hay  4 Liberales, 2 Fascistas y Hitler. Hitler no conoce quienes son los Fascistas."
+        return "Oyunda 4 Liberal, 2 Faşist ve 1 Hitler var. Hitler faşistlerini göremeyecek."
     elif player_number == 8:
-        return "Hay  5 Liberales, 2 Fascistas y Hitler. Hitler no conoce quienes son los Fascistas."
+        return "Oyunda 5 Liberal, 2 Faşist ve 1 Hitler var. Hitler faşistlerini göremeyecek."
     elif player_number == 9:
-        return "Hay  5 Liberales, 3 Fascistas y Hitler. Hitler no conoce quienes son los Fascistas."
+        return "Oyunda 5 Liberal, 3 Faşist ve 1 Hitler var. Hitler faşistlerini göremeyecek."
     elif player_number == 10:
-        return "Hay  6 Liberales, 3 Fascistas y Hitler. Hitler no conoce quienes son los Fascistas."
+        return "Oyunda 6 Liberal, 3 Faşist ve 1 Hitler var. Hitler faşistlerini göremeyecek."
 
 
 def inform_fascists(bot, game, player_number):
@@ -997,15 +997,15 @@ def inform_fascists(bot, game, player_number):
 						fstring += f.name + ", "
 				fstring = fstring[:-2]
 				if not game.is_debugging:
-					bot.send_message(uid, "Tus compañeros fascistas son: %s" % fstring)
+					bot.send_message(uid, "Faşist arkadaşların: %s" % fstring)
 			hitler = game.get_hitler()
 			if not game.is_debugging:
-				bot.send_message(uid, "Hitler es: %s" % hitler.name) #Uncoomend on production
+				bot.send_message(uid, "Hitler: %s" % hitler.name) #Uncoomend on production
 		elif role == "Hitler":
 			if player_number <= 6:
 				fascists = game.get_fascists()
 				if not game.is_debugging:
-					bot.send_message(uid, "Tu compañero fascista es: %s" % fascists[0].name)
+					bot.send_message(uid, "Faşist arkadaşların: %s" % fascists[0].name)
 		elif role == "Liberal":
 			pass
 		else:
@@ -1039,7 +1039,7 @@ def shuffle_policy_pile(bot, game):
 		game.board.policies = random.sample(game.board.discards, len(game.board.discards))
 		game.board.discards = []		
 		bot.send_message(game.cid,
-			"No habia cartas suficientes en el mazo de políticas asi que he mezclado el resto con el mazo de descarte!")
+			"Yasa destesinde yeterli kart kalmadı, ben de kalan kartları çekme destesiyle karıştırdım.!")
 
 def getGamesByTipo(opcion):
 	games = None
