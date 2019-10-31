@@ -62,7 +62,7 @@ cur.execute(query)
 ##
 
 def start_round(bot, game):        
-	Commands.save_game(game.cid, "Saved Round %d" % (game.board.state.currentround + 1), game)
+	Commands.save_game(game.cid, "Oyun Kaydedildi %d" % (game.board.state.currentround + 1), game)
 	log.info('start_round called')
 	# Starting a new round makes the current round to go up    
 	game.board.state.currentround += 1
@@ -74,7 +74,7 @@ def start_round(bot, game):
 		game.board.state.chosen_president = None
 
 	Commands.print_board(bot, game, game.cid)
-	msgtext =  "El próximo candidato a presidente es [%s](tg://user?id=%d).\n%s, por favor nomina a un canciller en nuestro chat privado!" % (game.board.state.nominated_president.name, game.board.state.nominated_president.uid, game.board.state.nominated_president.name)
+	msgtext =  "Bir sonraki cumhurbaşkanı adayı [%s](tg://user?id=%d).\n%s, lütfen özel sohbetten bir şansölye aday gösteriniz!" % (game.board.state.nominated_president.name, game.board.state.nominated_president.uid, game.board.state.nominated_president.name)
 	bot.send_message(game.cid, msgtext, ParseMode.MARKDOWN)
 	choose_chancellor(bot, game)
 	# --> nominate_chosen_chancellor --> vote --> handle_voting --> count_votes --> voting_aftermath --> draw_policies
@@ -136,22 +136,22 @@ def nominate_chosen_chancellor(update: Update, context: CallbackContext):
 		game = Commands.get_game(cid)
 
 		if callback.from_user.id != game.board.state.nominated_president.uid:
-			bot.edit_message_text("No eres el presidente actual, no puedes nominar!", callback.from_user.id, callback.message.message_id)
+			bot.edit_message_text("Şu anki başkan sen değilsin, aday gösteremezsin", callback.from_user.id, callback.message.message_id)
 			return
 
 		game.board.state.nominated_chancellor = game.playerlist[chosen_uid]
-		log.info("El Presidente %s (%d) nominó a %s (%d)" % (
+		log.info("Başkan %s (%d)'ın şansölye adayı %s (%d)" % (
 					game.board.state.nominated_president.name, game.board.state.nominated_president.uid,
 					game.board.state.nominated_chancellor.name, game.board.state.nominated_chancellor.uid))
-		bot.edit_message_text("Tú nominaste a %s como canciller!" % game.board.state.nominated_chancellor.name,
+		bot.edit_message_text("Şansölye olarak %s'ı aday gösterdiniz!" % game.board.state.nominated_chancellor.name,
 					callback.from_user.id, callback.message.message_id)
 		bot.send_message(game.cid,
-					"El presidente %s nominó a %s como canciller. Por favor, vota ahora!" % (
+					"Başkan %s, %s'ı şansölye olarak aday gösterdi. Lütfen oy verin!" % (
 					game.board.state.nominated_president.name, game.board.state.nominated_chancellor.name))
 		vote(bot, game)
 		# Save after voting buttons send and set phase voting
 		game.board.state.fase = "vote"
-		Commands.save_game(game.cid, "vote Round %d" % (game.board.state.currentround), game)
+		Commands.save_game(game.cid, "Oy Zamanı %d" % (game.board.state.currentround), game)
 	except AttributeError as e:
 		log.error("nominate_chosen_chancellor: Game or board should not be None! Eror: " + str(e))
 	except Exception as e:
@@ -164,8 +164,8 @@ def vote(bot, game):
 	game.dateinitvote = datetime.datetime.now()
 
 	strcid = str(game.cid)
-	btns = [[InlineKeyboardButton("Ja", callback_data=strcid + "_Ja"),
-	InlineKeyboardButton("Nein", callback_data=strcid + "_Nein")]]
+	btns = [[InlineKeyboardButton("Evet", callback_data=strcid + "_Ja"),
+	InlineKeyboardButton("Hayır", callback_data=strcid + "_Nein")]]
 	voteMarkup = InlineKeyboardMarkup(btns)
 	for uid in game.playerlist:
 		if not game.playerlist[uid].is_dead and not game.is_debugging:
@@ -192,28 +192,28 @@ def handle_voting(update: Update, context: CallbackContext):
 		uid = callback.from_user.id
 		#
 		if game.dateinitvote is None:
-			bot.edit_message_text("No es el momento de votar!", uid, callback.message.message_id)
+			bot.edit_message_text("Oy verme zamanı değil!", uid, callback.message.message_id)
 			return
 
-		bot.edit_message_text("Gracias por tu voto: %s para el Presidente %s y el canciller %s" % (
+		bot.edit_message_text("Oyunuz kaydedildi: %s Başkan %s ve Şansölye %s için" % (
 			answer, game.board.state.nominated_president.name, game.board.state.nominated_chancellor.name), uid,
 			callback.message.message_id)
-		log.info("Player %s (%d) voted %s" % (callback.from_user.first_name, uid, answer))
+		log.info("Oyuncu %s (%d) oyladı %s" % (callback.from_user.first_name, uid, answer))
 
 		#if uid not in game.board.state.last_votes:
 		game.board.state.last_votes[uid] = answer
 
 		#Allow player to change his vote
-		btns = [[InlineKeyboardButton("Ja", callback_data=strcid + "_Ja"),
-				InlineKeyboardButton("Nein", callback_data=strcid + "_Nein")]]
+		btns = [[InlineKeyboardButton("Evet", callback_data=strcid + "_Ja"),
+				InlineKeyboardButton("Hayır", callback_data=strcid + "_Nein")]]
 		voteMarkup = InlineKeyboardMarkup(btns)
 		 
 		groupName = ""
 		
 		if hasattr(game, 'groupName'):
-			groupName += "*En el grupo {}*\n".format(game.groupName)
+			groupName += "*Grup Bilgisi {}*\n".format(game.groupName)
 
-		msg = "{}\nPuedes cambiar tu voto aquí.\nQuieres elegir al Presidente *{}* y al canciller *{}*?".format(groupName, game.board.state.nominated_president.name, game.board.state.nominated_chancellor.name)
+		msg = "{}\nOyunuzu tekrar değiştirebilirsiniz.\nCumhurbaşkanı *{}* ve Şansöyle *{}*'ı onaylıyor musun?".format(groupName, game.board.state.nominated_president.name, game.board.state.nominated_chancellor.name)
 		bot.send_message(uid, msg, reply_markup=voteMarkup, parse_mode=ParseMode.MARKDOWN)
 		Commands.save_game(game.cid, "vote Round %d" % (game.board.state.currentround), game)
 		if len(game.board.state.last_votes) == len(game.player_sequence):
@@ -238,7 +238,7 @@ def count_votes(bot, game):
 		len(game.player_sequence) / 2):  # because player_sequence doesnt include dead
 		# VOTING WAS SUCCESSFUL
 		log.info("Voting successful")
-		voting_text += "Hail Presidente [%s](tg://user?id=%d)! Hail Canciller [%s](tg://user?id=%d)!" % (
+		voting_text += "Heil Başkan [%s](tg://user?id=%d)! Heil Şansölye [%s](tg://user?id=%d)!" % (
 			game.board.state.nominated_president.name, game.board.state.nominated_president.uid, 
 				game.board.state.nominated_chancellor.name, game.board.state.nominated_chancellor.uid)
 		game.board.state.chancellor = game.board.state.nominated_chancellor
@@ -254,7 +254,7 @@ def count_votes(bot, game):
 		voting_aftermath(bot, game, voting_success)
 	else:
 		log.info("Voting failed")
-		voting_text += "Al pueblo no les gusto el Presidente %s y el canciller %s!" % (
+		voting_text += "Halk, Başkanın %s ve Şansölyenin %s olacağı hükümeti beğenmedi!" % (
 			game.board.state.nominated_president.name, game.board.state.nominated_chancellor.name)
 		game.board.state.nominated_president = None
 		game.board.state.nominated_chancellor = None
@@ -304,10 +304,10 @@ def draw_policies(bot, game):
 	game.hiddenhistory.append(("*Ronda %d.%d*\nEl presidente %s recibió " % (game.board.state.liberal_track + game.board.state.fascist_track + 1, game.board.state.failed_votes + 1, game.board.state.president.name) ) + hiddenhistory_text)
 	choosePolicyMarkup = InlineKeyboardMarkup(btns)
 	if not game.is_debugging:
-		bot.send_message(game.board.state.president.uid, "Has robado las siguientes 3 politicas. Cual quieres descartar?",
+		bot.send_message(game.board.state.president.uid, "Aşağıdaki 3 yasayı desteden çektin. Hangisini çöpe atmak istersin?",
 			reply_markup=choosePolicyMarkup)
 	else:
-		bot.send_message(ADMIN, "Has robado las siguientes 3 politicas. Cual quieres descartar?",
+		bot.send_message(ADMIN, "Aşağıdaki 3 yasayı desteden çektin. Hangisini çöpe atmak istersin?",
 			reply_markup=choosePolicyMarkup)
 	game.board.state.fase = "legislating president discard"
 	Commands.save_game(game.cid, "legislating president discard Round %d" % (game.board.state.currentround), game)
