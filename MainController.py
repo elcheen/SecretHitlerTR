@@ -424,11 +424,11 @@ def enact_policy(bot, game, policy, anarchy):
 		game.board.state.fascist_track += 1
 	game.board.state.failed_votes = 0  # reset counter
 	if not anarchy:
-		bot.send_message(game.cid, "El Presidente %s y el Canciller %s promulgaron una política %s!" % (game.board.state.president.name, game.board.state.chancellor.name, policy))
-		game.history.append("El Presidente %s y el Canciller %s promulgaron una política %s!" % (game.board.state.president.name, game.board.state.chancellor.name, policy))
+		bot.send_message(game.cid, "Başkan %s ve Şansölye %s'nin onayladığı yasa %s!" % (game.board.state.president.name, game.board.state.chancellor.name, policy))
+		game.history.append("Başkan %s ve Şansölye %s'nin onayladığı yasa %s!" % (game.board.state.president.name, game.board.state.chancellor.name, policy))
 	else:
-		bot.send_message(game.cid, "La política en la cima del mazo ha sido promulgada y es %s" % policy)
-		game.history.append("La política en la cima del mazo ha sido promulgada y es %s" % policy)
+		bot.send_message(game.cid, "Destenin en üstündeki kart olan %s yasası tabloya eklendi" % policy)
+		game.history.append("Destenin en üstündeki kart olan %s yasası tabloya eklendi" % policy)
 	#sleep(2)    
 	# end of round
 	if game.board.state.liberal_track == 5:
@@ -449,32 +449,32 @@ def enact_policy(bot, game, policy, anarchy):
 				start_next_round(bot, game)
 			elif action == "policy":
 				bot.send_message(game.cid,
-					"Poder Presidencial habilitado: Investigar Políticas " + u"\U0001F52E" + "\nEl Presidente %s ahora conoce las proximas tres políticas "
-					"en el mazo. El Presidente puede compartir "
-					"(o mentir al respecto!) los resultados de su "
-					"investigación a su propia discreción." % game.board.state.president.name)
-				game.history.append("El presidente %s ahora conoce las proximas 3 políticas en el mazo." % game.board.state.president.name)
+					"Cumhurbaşkanı gücü açıldı: Yasaları Görme " + u"\U0001F52E" + "\nBaşkan %s, kart destesinin en üstündeki 3 kartı görecek"
+					" Başkan bunu diğer oyuncularla paylaşabilir"
+					" (ya da yalan söyleyebilir!) sonuçlarına herkes katlanır "
+					" Akıllıca seçim yap.." % game.board.state.president.name)
+				game.history.append("Başkan %s, şimdi gelecek 3 yasa kartının ne olduğunu biliyor." % game.board.state.president.name)
 				action_policy(bot, game)                
 			elif action == "kill":
-				msg = "Poder Presidencial habilitado: Ejecución " + u"\U0001F5E1" + "\nEl Presidente %s tiene que matar a ua persona. Pueden discutir la desición ahora pero el Presidente tiene la última palabra." % game.board.state.president.name
+				msg = "Cumhurbaşkanı gücü açıldı: İnfaz " + u"\U0001F5E1" + "\nBaşkan %s, bir kişi öldürmek zorunda. Kararı tartışabilirsiniz ancak unutmayın son sözü Başkan söyler!" % game.board.state.president.name
 				bot.send_message(game.cid, msg)
 				game.board.state.fase = "legislating power kill"
 				Commands.save_game(game.cid, "legislating power kill Round %d" % (game.board.state.currentround), game)
 				action_kill(bot, game)				
 			elif action == "inspect":
 				bot.send_message(game.cid,
-					"Poder Presidencial habilitado: Investigar Afiliación Política " + u"\U0001F50E" + "\nEl Presidente %s puede ver la afiliación política de un "
-					"jugador. El Presidente puede compartir "
-					"(o mentir al respecto!) los resultados de su "
-					"investigación a su propia discreción." % game.board.state.president.name)
+					"Cumhurbaşkanı gücü açıldı: Parti Üyeliği Görme " + u"\U0001F50E" + "\nBaşkan %s, bir kişinin parti üyeliğini görebilecek"
+					" Başkan bunu diğerleriyle paylaşabilir"
+					" (ya da yalan söyleyebilir!) sonuçlarına herkes katlanır"
+					" Seçimini akıllıca yap.." % game.board.state.president.name)
 				game.board.state.fase = "legislating power inspect"
 				Commands.save_game(game.cid, "legislating power inspect Round %d" % (game.board.state.currentround), game)				
 				action_inspect(bot, game)
 			elif action == "choose":
 				bot.send_message(game.cid,
-					"Poder Presidencial habilitado: Llamar a Elección Especial " + u"\U0001F454" + "\nEl Presidente %s puede elegir al próximo candidato presidencial. "
-					"Despúes el orden continua "
-					"normalmente." % game.board.state.president.name)
+					"Cumhurbaşkanı gücü açıldı: Başkan Atama Yetkisi " + u"\U0001F454" + "\nBaşkan %s, bir sonraki başkanın kim olacağını seçebilecek."
+					" Daha sonra seçim kaldığı yerden"
+					" devam edecektir." % game.board.state.president.name)
 				game.board.state.fase = "legislating power choose"
 				Commands.save_game(game.cid, "legislating power choose Round %d" % (game.board.state.currentround), game)
 				action_choose(bot, game)
