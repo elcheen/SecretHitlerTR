@@ -497,9 +497,9 @@ def choose_veto(update: Update, context: CallbackContext):
         uid = callback.from_user.id
         if answer == "yesveto":
             log.info("Player %s (%d) accepted the veto" % (callback.from_user.first_name, uid))
-            bot.edit_message_text("Has aceptado el Veto!", uid, callback.message.message_id)
+            bot.edit_message_text("Veto kabul edildi!", uid, callback.message.message_id)
             bot.send_message(game.cid,
-                             "El Presidente %s ha aceptado el Veto del Canciller %s. No se ha promulgado una politíca pero esto cuenta como una elección fallida." % (
+                             "Başkan %s, Şansölyesi %s'ın yapmış olduğu veto teklifini kabul etti. Hiçbir yasa yürürlülüğe girmeyecek ancak bu bir başarısız seçim olarak işaretlenecek." % (
                                  game.board.state.president.name, game.board.state.chancellor.name))
             game.board.discards += game.board.state.drawn_policies
             game.board.state.drawn_policies = []
@@ -512,9 +512,9 @@ def choose_veto(update: Update, context: CallbackContext):
         elif answer == "noveto":
             log.info("Player %s (%d) declined the veto" % (callback.from_user.first_name, uid))
             game.board.state.veto_refused = True
-            bot.edit_message_text("Has rechazado el Veto!", uid, callback.message.message_id)
+            bot.edit_message_text("Veto reddedildi!", uid, callback.message.message_id)
             bot.send_message(game.cid,
-                             "El Presidente %s ha rechazado el Veto del Canciller %s. El Canciller debe ahora elegir una política!" % (
+                             "Başkan %s, Şansölyesi %s'ın veto teklifini reddetti. Şansölye şimdi yürürlülüğe bir yasa koymak zorunda!" % (
                                  game.board.state.president.name, game.board.state.chancellor.name))
             pass_two_policies(bot, game)
         else:
@@ -525,7 +525,7 @@ def choose_veto(update: Update, context: CallbackContext):
 
 def do_anarchy(bot, game):
 	#log.info('do_anarchy called')	
-	bot.send_message(game.cid, "ANARCHY!!")
+	bot.send_message(game.cid, "ANARŞİİ!!")
 	game.board.state.president = None
 	game.board.state.chancellor = None
 	top_policy = game.board.policies.pop(0)
@@ -541,7 +541,7 @@ def action_policy(bot, game):
     for i in range(3):
         topPolicies += game.board.policies[i] + "\n"
     bot.send_message(game.board.state.president.uid,
-                     "Las próximas 3 politicas son (La de arriba es la primera):\n%s\nPuedes mentir al respectosi quieres." % topPolicies)
+                     "Sonraki 3 yasa (üst sıralamasına göre):\n%s\nPaylaşmamayı seçebilirsiniz." % topPolicies)
     start_next_round(bot, game)
 
 
@@ -557,7 +557,7 @@ def action_kill(bot, game):
 	killMarkup = InlineKeyboardMarkup(btns)
 	Commands.print_board(bot, game, game.board.state.president.uid)
 	bot.send_message(game.board.state.president.uid,
-		'Tienes que matar a una persona. Puedes discutir tu decisión con los otros. Elige sabiamente!',
+		'Birini öldürmek zorundasın. Kararını diğerleri ile tartışabilirsin. Akıllıca seç!',
 		reply_markup=killMarkup)
 
 
@@ -578,9 +578,9 @@ def choose_kill(update: Update, context: CallbackContext):
         game.board.state.dead += 1
         log.info("El jugador %s (%d) mató a %s (%d)" % (
             callback.from_user.first_name, callback.from_user.id, chosen.name, chosen.uid))
-        bot.edit_message_text("Has matado a %s!" % chosen.name, callback.from_user.id, callback.message.message_id)
+        bot.edit_message_text("%s'ı öldürdün!" % chosen.name, callback.from_user.id, callback.message.message_id)
         if chosen.role == "Hitler":
-            bot.send_message(game.cid, "El Presidente " + game.board.state.president.name + " ha matado a " + chosen.name + ". ")
+            bot.send_message(game.cid, "Başkan " + game.board.state.president.name + " 'ı öldürdü " + chosen.name + ". ")
             end_game(bot, game, 2)
         else:
             bot.send_message(game.cid,
