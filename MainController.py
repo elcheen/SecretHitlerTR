@@ -584,10 +584,10 @@ def choose_kill(update: Update, context: CallbackContext):
             end_game(bot, game, 2)
         else:
             bot.send_message(game.cid,
-                             "El Presidente %s ha matado a %s que no era Hitler. %s, ahora estás muerto y no puedes hablar más!" % (
+                             "Başkan %s, %s’ı öldürdü ve o Hitler değildi. %s, şu andan itibaren ölüsün ve ölüler konuşamaz!" % (
                                  game.board.state.president.name, chosen.name, chosen.name))
             
-            game.history.append("El Presidente %s ha matado a %s que no era Hitler!" % (game.board.state.president.name, chosen.name))
+            game.history.append("Başkan %s, %s’ı öldürdü ve o Hitler değildi." % (game.board.state.president.name, chosen.name))
             start_next_round(bot, game)
     except:
         log.error("choose_kill: Game or board should not be None!")
@@ -606,7 +606,7 @@ def action_choose(bot, game):
     inspectMarkup = InlineKeyboardMarkup(btns)
     Commands.print_board(bot, game, game.board.state.president.uid)
     bot.send_message(game.board.state.president.uid,
-                     'Puedes elegir al próximo candidato a presidente. Después el orden vuelve a la normalidad. Elige sabiamente!',
+                     'Bir sonraki başkanı seçebileceksin. Daha sonra sıralama normale döner.',
                      reply_markup=inspectMarkup)
 
 
@@ -624,12 +624,12 @@ def choose_choose(update: Update, context: CallbackContext):
         log.info(
             "El jugador %s (%d) ha elegido a %s (%d) como próximo Presidente" % (
                 callback.from_user.first_name, callback.from_user.id, chosen.name, chosen.uid))
-        bot.edit_message_text("Has elegido a %s como el próximo presidente!" % chosen.name, callback.from_user.id,
+        bot.edit_message_text("%s’ı bir sonraki başkan seçtin!" % chosen.name, callback.from_user.id,
                               callback.message.message_id)
         bot.send_message(game.cid,
-                         "El Presidente %s ha elegido a %s como próximo presidente." % (
+                         "Başkan %s’ın başkanlık seçimi %s." % (
                              game.board.state.president.name, chosen.name))
-        game.history.append("El Presidente %s ha elegido a %s como próximo presidente." % (game.board.state.president.name, chosen.name))
+        game.history.append("Başkan %s’ın başkanlık seçimi %s." % (game.board.state.president.name, chosen.name))
         start_next_round(bot, game)
     except:
         log.error("choose_choose: Game or board should not be None!")
@@ -647,7 +647,7 @@ def action_inspect(bot, game):
     inspectMarkup = InlineKeyboardMarkup(btns)
     Commands.print_board(bot, game, game.board.state.president.uid)
     bot.send_message(game.board.state.president.uid,
-                     'Puedes ver la afiliación política de un jugador. A quien quieres elegir? Elige sabiamente!',
+                     'Bir kişinin parti üyeliğini görebileceksin. Kimi seçmek istersin. İyi düşün!',
                      reply_markup=inspectMarkup)
 
 
@@ -665,12 +665,12 @@ def choose_inspect(update: Update, context: CallbackContext):
             "Player %s (%d) inspects %s (%d)'s party membership (%s)" % (
                 callback.from_user.first_name, callback.from_user.id, chosen.name, chosen.uid,
                 chosen.party))
-        bot.edit_message_text("La afiliación política de %s es %s" % (chosen.name, chosen.party),
+        bot.edit_message_text("%s‘ın parti üyeliği %s" % (chosen.name, chosen.party),
                               callback.from_user.id,
                               callback.message.message_id)
         chosen.was_investigated = True
-        bot.send_message(game.cid, "El Presidente %s ha inspeccionado a %s." % (game.board.state.president.name, chosen.name))
-        game.history.append("El Presidente %s ha inspeccionado a %s." % (game.board.state.president.name, chosen.name))
+        bot.send_message(game.cid, "Başkan %s, %s’ı dikizledi." % (game.board.state.president.name, chosen.name))
+        game.history.append("Başkan %s, %s’ı dikizledi." % (game.board.state.president.name, chosen.name))
         start_next_round(bot, game)
     except:
         log.error("choose_inspect: Game or board should not be None!")
@@ -693,17 +693,17 @@ def decide_anarquia(bot, game):
 	#When voting starts we start the counter to see later with the vote command if we can see you voted.
 	game.board.state.votes_anarquia = {}
 	strcid = str(game.cid)
-	btns = [[InlineKeyboardButton("Ja", callback_data=strcid + "_SiAna"),
-	InlineKeyboardButton("Nein", callback_data=strcid + "_NoAna")]]
+	btns = [[InlineKeyboardButton("Evet", callback_data=strcid + "_SiAna"),
+	InlineKeyboardButton("Hayır", callback_data=strcid + "_NoAna")]]
 	voteMarkup = InlineKeyboardMarkup(btns)
 	for uid in game.playerlist:
 		if not game.is_debugging:
 			if not game.playerlist[uid].is_dead:                      
 				Commands.print_board(bot, game, uid)				
-				bot.send_message(uid, "¿Quieres ir a anarquia? (CUIDADO si la mitad de los jugadores elige SI no se espera)", reply_markup=voteMarkup)
+				bot.send_message(uid, "Anarşiye gitmek ister misin? (Eğer oyuncuların yarısı gitmeyi seçerse)", reply_markup=voteMarkup)
 		else:
 			bot.send_message(ADMIN, game.board.print_board(game.player_sequence))
-			bot.send_message(ADMIN, "¿Quieres ir a anarquia? (CUIDADO si la mitad de los jugadores elige SI no se espera)", reply_markup=voteMarkup)
+			bot.send_message(ADMIN, "Anarşiye gitmek ister misin? (Eğer oyuncuların gitmeyi seçerse kabul edilir", reply_markup=voteMarkup)
 			
 def handle_voting_anarquia(update: Update, context: CallbackContext):
 	bot = context.bot
