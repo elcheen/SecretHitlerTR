@@ -326,18 +326,18 @@ def choose_policy(update: Update, context: CallbackContext):
 
 		# Solo el presidente y el canciller pueden elegir politica.
 		if uid not in [game.board.state.chancellor.uid, game.board.state.president.uid]:
-			msg = "No eres ni el presidente ni el canciller actual!"
+			msg = "Şu an Başkan ya da Şansölye değilsin!"
 			bot.edit_message_text(msg, uid,	callback.message.message_id)
 			return
 
 		# Si hay 3 politicas veo que sea el presidente el que descarte.
 		if len(game.board.state.drawn_policies) == 3 and uid == game.board.state.president.uid:
 			log.info("Player %s (%d) discarded %s" % (callback.from_user.first_name, uid, answer))
-			bot.edit_message_text("La política %s va a ser descartada!" % answer, uid,
+			bot.edit_message_text("%s yasası atılacak!" % answer, uid,
 			callback.message.message_id)
 			# remove policy from drawn cards and add to discard pile, pass the other two policies
 			# Grabo en Hidden History que descarta el presidente.
-			game.hiddenhistory.append("El presidente descartó " + answer)
+			game.hiddenhistory.append("Başkan yasa elemesi yaptı " + answer)
 			for i in range(3):
 				if game.board.state.drawn_policies[i] == answer:
 					game.board.discards.append(game.board.state.drawn_policies.pop(i))                                
@@ -347,23 +347,23 @@ def choose_policy(update: Update, context: CallbackContext):
 			# Si el canciller elije el boton de veto
 			if answer == "veto" :
 				log.info("Player %s (%d) suggested a veto" % (callback.from_user.first_name, uid))
-				bot.edit_message_text("Has sugerido vetar al Presidente %s" % game.board.state.president.name, uid,
+				bot.edit_message_text("Başkan %s'a veto önerdin" % game.board.state.president.name, uid,
 					callback.message.message_id)
 				bot.send_message(game.cid,
-					"El canciller %s sugirío Vetar al Presidente %s." % (
+					"Şansölye %s, Başkan %s'a veto önerdi." % (
 					game.board.state.chancellor.name, game.board.state.president.name))
 
-				btns = [[InlineKeyboardButton("Veto! (aceptar sugerencia)", callback_data=strcid + "_yesveto")],
-				[InlineKeyboardButton("No Veto! (rechazar sugerencia)", callback_data=strcid + "_noveto")]]
+				btns = [[InlineKeyboardButton("Veto! (öneri kabul edildi)", callback_data=strcid + "_yesveto")],
+				[InlineKeyboardButton("Veto İptal! (önerin reddedildi)", callback_data=strcid + "_noveto")]]
 
 				vetoMarkup = InlineKeyboardMarkup(btns)
 				bot.send_message(game.board.state.president.uid,
-					"El canciller %s te sugirío Vetar. Quieres vetar (descartar) estas cartas?" % game.board.state.chancellor.name,
+					"Şansölye %s veto etmeyi önerdi. Bu kartları veto (iptal) etmek ister misin?" % game.board.state.chancellor.name,
 					reply_markup=vetoMarkup)
 			else:
 				# Si el canciller promulga...
 				log.info("Player %s (%d) chose a %s policy" % (callback.from_user.first_name, uid, answer))
-				bot.edit_message_text("La politica %s será promulgada!" % answer, uid,
+				bot.edit_message_text("%s yasası onaylanacak!" % answer, uid,
 				callback.message.message_id)
 				# remove policy from drawn cards and enact, discard the other card
 				for i in range(2):
@@ -389,28 +389,28 @@ def pass_two_policies(bot, game):
 		btns.append([InlineKeyboardButton("Veto", callback_data=strcid + "_veto")])
 		choosePolicyMarkup = InlineKeyboardMarkup(btns)
 		bot.send_message(game.cid,
-			"El presidente %s entregó dos políticas al Canciller %s." % (
+			"Başkan %s, Şansölye %s'a 2 yasa verdi." % (
 			game.board.state.president.name, game.board.state.chancellor.name))
 		bot.send_message(game.board.state.chancellor.uid,
-			"El Presidente %s te entregó las siguientes 2 políticas. Cuál quieres promulgar? También puedes usar el poder de Veto." % game.board.state.president.name,
+			"Başkan %s, size bu 2 yasayı verdi. Hangisini onaylamak istiyorsunuz? Veto önerisi sunabilirsin." % game.board.state.president.name,
 		reply_markup=choosePolicyMarkup)
 	elif game.board.state.veto_refused:
 		choosePolicyMarkup = InlineKeyboardMarkup(btns)
 		bot.send_message(game.board.state.chancellor.uid,
-			"El presidente %s ha rechazado tu Veto. Ahora tienes que elegir. Cuál quieres promulgar?" % game.board.state.president.name,
+			"Başkan %s, Veto önerinizi reddetti. Şimdi seçmek zorundasın. Hangi yasayı onaylamak istiyorsunuz?" % game.board.state.president.name,
 			reply_markup=choosePolicyMarkup)
 	elif game.board.state.fascist_track < 5:
 		bot.send_message(game.cid,
-			"El presidente %s entregó dos políticas al Canciller %s." % (
+			"Başkan %s, Şansölye %s'a 2 yasa verdi." % (
 			game.board.state.president.name, game.board.state.chancellor.name))
 		choosePolicyMarkup = InlineKeyboardMarkup(btns)
 		if not game.is_debugging:
 			bot.send_message(game.board.state.chancellor.uid,
-				"El Presidente %s te entregó las siguientes 2 políticas. Cuál quieres promulgar?" % game.board.state.president.name,
+				"Başkan %s, size bu 2 yasayı verdi. Hangisini onaylamak istiyorsunuz?" % game.board.state.president.name,
 				reply_markup=choosePolicyMarkup)
 		else:
 			bot.send_message(ADMIN,
-				"El Presidente %s te entregó las siguientes 2 políticas. Cuál quieres promulgar?" % game.board.state.president.name,
+				"Başkan %s, size bu 2 yasayı verdi. Hangisini onaylamak istiyorsunuz?" % game.board.state.president.name,
 				reply_markup=choosePolicyMarkup)	
 	
 	game.board.state.fase = "legislating choose chancellor"
