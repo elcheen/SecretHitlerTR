@@ -231,9 +231,9 @@ def count_votes(bot, game):
 	for player in game.player_sequence:
 		nombre_jugador = game.playerlist[player.uid].name.replace("_", " ")
 		if game.board.state.last_votes[player.uid] == "Ja":
-			voting_text += nombre_jugador + " votó Ja!\n"
+			voting_text += nombre_jugador + " 'ın oyu Evet!\n"
 		elif game.board.state.last_votes[player.uid] == "Nein":
-			voting_text += nombre_jugador + " votó Nein!\n"
+			voting_text += nombre_jugador + " 'ın oyu Hayır!\n"
 	if list(game.board.state.last_votes.values()).count("Ja") > (
 		len(game.player_sequence) / 2):  # because player_sequence doesnt include dead
 		# VOTING WAS SUCCESSFUL
@@ -248,7 +248,7 @@ def count_votes(bot, game):
 		voting_success = True
 		
 		bot.send_message(game.cid, voting_text, ParseMode.MARKDOWN)
-		bot.send_message(game.cid, "\nNo se puede hablar ahora.")
+		bot.send_message(game.cid, "\nYasa koyulana kadar hükümet konuşamaz.")
 		game.history.append(("Ronda %d.%d\n\n" % (game.board.state.liberal_track + game.board.state.fascist_track + 1, game.board.state.failed_votes + 1) ) + voting_text)
 		#log.info(game.history[game.board.state.currentround])
 		voting_aftermath(bot, game, voting_success)
