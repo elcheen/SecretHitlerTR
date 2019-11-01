@@ -62,7 +62,7 @@ cur.execute(query)
 ##
 
 def start_round(bot, game):        
-	Commands.save_game(game.cid, "Oyun Kaydedildi %d" % (game.board.state.currentround + 1), game)
+	Commands.save_game(game.cid, "Saved Round %d" % (game.board.state.currentround + 1), game)
 	log.info('start_round called')
 	# Starting a new round makes the current round to go up    
 	game.board.state.currentround += 1
