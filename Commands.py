@@ -316,7 +316,7 @@ def command_join(update: Update, context: CallbackContext):
 		player = Player(fname, uid)
 		try:
 			#Commented to dont disturb player during testing uncomment in production
-			bot.send_message(uid, "Te has unido a un juego en %s. Pronto te dire cual es tu rol secreto." % groupName)
+			bot.send_message(uid, "%s grubundaki Secret Hitler oyununa katıldınız. Oyun başladığında sana gizli rolünü söyleyeceğim." % groupName)
 			choose_posible_role(bot, cid, uid)
 			
 			game.add_player(uid, player)
