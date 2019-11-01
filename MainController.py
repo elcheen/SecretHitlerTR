@@ -140,7 +140,7 @@ def nominate_chosen_chancellor(update: Update, context: CallbackContext):
 			return
 
 		game.board.state.nominated_chancellor = game.playerlist[chosen_uid]
-		log.info("Başkan %s (%d)'ın şansölye adayı %s (%d)" % (
+		log.info("El Presidente %s (%d) nominó a %s (%d)" % (
 					game.board.state.nominated_president.name, game.board.state.nominated_president.uid,
 					game.board.state.nominated_chancellor.name, game.board.state.nominated_chancellor.uid))
 		bot.edit_message_text("Şansölye olarak %s'ı aday gösterdiniz!" % game.board.state.nominated_chancellor.name,
@@ -198,7 +198,7 @@ def handle_voting(update: Update, context: CallbackContext):
 		bot.edit_message_text("Oyunuz kaydedildi: %s Başkan %s ve Şansölye %s için" % (
 			answer, game.board.state.nominated_president.name, game.board.state.nominated_chancellor.name), uid,
 			callback.message.message_id)
-		log.info("Oyuncu %s (%d) oyladı %s" % (callback.from_user.first_name, uid, answer))
+		log.info("Player %s (%d) voted %s" % (callback.from_user.first_name, uid, answer))
 
 		#if uid not in game.board.state.last_votes:
 		game.board.state.last_votes[uid] = answer
