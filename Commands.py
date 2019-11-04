@@ -137,7 +137,7 @@ def command_rules(update: Update, context: CallbackContext):
 def command_ping(update: Update, context: CallbackContext):
 	bot = context.bot
 	cid = update.message.chat_id
-	bot.send_message(cid, '*~Teşekkürler~* \n\n-@tilkimsi\n\n-@kubraa\n\n-@MisterFool\n\n \u2620')
+	bot.send_message(cid, '~Teşekkürler~ \n\n-@tilkimsi\n\n-@kubraa\n\n-@MisterFool\n\n \u2620')
 
 
 def get_stat_query(query, partidas_totales, partidas_fascista, partidas_hitler, partidas_liberal, partidas_murio, partidas_fascista_gano, partidas_hitler_gano, partidas_liberal_gano):
