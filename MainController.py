@@ -1128,7 +1128,7 @@ def main():
 	dp.add_handler(CommandHandler("help", Commands.command_help))
 	dp.add_handler(CommandHandler("board", Commands.command_board))
 	dp.add_handler(CommandHandler("rules", Commands.command_rules))
-	dp.add_handler(CommandHandler("ping", Commands.command_ping))
+	dp.add_handler(CommandHandler("heil", Commands.command_ping))
 	dp.add_handler(CommandHandler("symbols", Commands.command_symbols))
 	dp.add_handler(CommandHandler("stats", Commands.command_stats))
 	dp.add_handler(CommandHandler("newgame", Commands.command_newgame))
