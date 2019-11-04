@@ -115,8 +115,8 @@ def choose_chancellor(bot, game):
 		Commands.print_board(bot, game, game.board.state.nominated_president.uid)
 		groupName = ""
 		if hasattr(game, 'groupName'):
-			groupName += "*En el grupo {}*\n".format(game.groupName)
-		msg = '{}Por favor nomina a tu canciller!'.format(groupName)
+			groupName += "*Grup Bilgisi: {}*\n".format(game.groupName)
+		msg = '{}Lütfen Şansölye adayınızı seçin'.format(groupName)
 		bot.send_message(game.board.state.nominated_president.uid, msg, reply_markup=chancellorMarkup)
 
 	game.board.state.fase = "choose_chancellor"
@@ -174,8 +174,8 @@ def vote(bot, game):
 				Commands.print_board(bot, game, uid)
 			groupName = ""		
 			if hasattr(game, 'groupName'):
-				groupName += "*En el grupo {}*\n".format(game.groupName)
-			msg = "{}Quieres elegir al Presidente *{}* y al canciller *{}*?".format(groupName, game.board.state.nominated_president.name, game.board.state.nominated_chancellor.name)
+				groupName += "*Grup Bilgisi: {}*\n".format(game.groupName)
+			msg = "{}Başkanın *{}* ve Şansölyenin *{}* olmasınk onaylıyor musun?".format(groupName, game.board.state.nominated_president.name, game.board.state.nominated_chancellor.name)
 			bot.send_message(uid, msg,	reply_markup=voteMarkup, parse_mode=ParseMode.MARKDOWN)
 
 
