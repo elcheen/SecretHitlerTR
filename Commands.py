@@ -128,7 +128,7 @@ def command_start(update: Update, context: CallbackContext):
 def command_rules(update: Update, context: CallbackContext):
 	bot = context.bot
 	cid = update.message.chat_id	
-	msg = """KNOCK KNOCK KNOCK KASIM"""
+	msg = """*Oyun Kurallarını Okuyunuz:* https://docdro.id/Q7TBl1Z"""
 	bot.send_message(cid, msg, ParseMode.MARKDOWN)
 
 
