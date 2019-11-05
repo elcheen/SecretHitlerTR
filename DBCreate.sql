@@ -48,4 +48,4 @@ CREATE TABLE IF NOT EXISTS achivements (
     description text NOT NULL
 );
 
-INSERT INTO stats VALUES (1, 0, 0, 0, 0, 0);
+--INSERT INTO stats VALUES (1, 0, 0, 0, 0, 0);
