@@ -239,13 +239,13 @@ def command_stats(update: Update, context: CallbackContext):
 	else:
 		# Si el usuario no pone argumentos se muestran las estadisticas normales
 		stats = MainController.get_stats(bot, cid)		
-		stattext = "+++ Estadísticas +++\n" + \
-				"Vict. Liberal (Politicas): *" + str(stats[3]) + "*\n" + \
-				"Vict. Liberal (Hitler ☠): *" + str(stats[4]) + "*\n" + \
-				"Vict. Fascista (Politicas): *" + str(stats[2]) + "*\n" + \
-				"Vict. Fascista (Hitler Canc): *" + str(stats[1]) + "*\n" + \
-				"Juegos cancelados: *" + str(stats[5]) + "*\n" + \
-				"Juegos totales: *" + str(stats[1] + stats[2] + stats[3] + stats[4]) + "*\n\n"		
+		stattext = "+++ *İstatistikler* +++\n" + \
+				"Liberal Galibiyetleri (Yasalarla): *" + str(stats[3]) + "*\n" + \
+				"Liberal Galibiyetleri (Hitler Ölü ☠): *" + str(stats[4]) + "*\n" + \
+				"Faşist Galibiyetleri (Yasalarla): *" + str(stats[2]) + "*\n" + \
+				"Faşist Galibiyetleri (Hitler Başkan): *" + str(stats[1]) + "*\n" + \
+				"İptal Edilen Oyunlar: *" + str(stats[5]) + "*\n" + \
+				"Toplam Oyun Sayısı: *" + str(stats[1] + stats[2] + stats[3] + stats[4]) + "*\n\n"		
 		bot.send_message(cid, stattext, ParseMode.MARKDOWN)
 		
 # help page
@@ -474,7 +474,7 @@ def command_showhistory(update: Update, context: CallbackContext):
 			#bot.send_message(cid, "Current round: " + str(game.board.state.currentround + 1))
 			uid = update.message.from_user.id
 			game.groupName = groupName
-			history_text = "Historial del grupo *{}*:\n\n".format(groupName)
+			history_text = "Oyun Geçmişi - *{}*:\n\n".format(groupName)
 			history_textContinue = "" 
 			for x in game.history:
 				if len(history_text) < 3500:
@@ -509,7 +509,7 @@ def command_claim(update: Update, context: CallbackContext):
 						#Data is being claimed
 						claimtext = ' '.join(args)
 						claimtexttohistory = "El jugador %s declara: %s" % (game.playerlist[uid].name, claimtext)
-						bot.send_message(cid, "Tu declaración: %s fue agregada al historial." % (claimtext))
+						bot.send_message(cid, "Tu declaración: %s fue agregada al." % (claimtext))
 						game.history.append("%s" % (claimtexttohistory))
 						save_game(cid, "Game in join state", game)
 					else:					
@@ -943,7 +943,7 @@ def command_change_stats(update: Update, context: CallbackContext):
 		amount = 6
 	try:
 		MainController.change_stats(uid, "SecretHitler", stat_name, amount)
-		bot.send_message(cid, "Stats actualizados")
+		bot.send_message(cid, "Güncel İstatistikler")
 	except Exception as e:
 		bot.send_message(cid, 'No se ejecuto el comando debido a: '+str(e))
 
