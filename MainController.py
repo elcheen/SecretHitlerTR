@@ -249,7 +249,7 @@ def count_votes(bot, game):
 		
 		bot.send_message(game.cid, voting_text, ParseMode.MARKDOWN)
 		bot.send_message(game.cid, "\nYasa koyulana kadar hükümet konuşamaz.")
-		game.history.append(("Ronda %d.%d\n\n" % (game.board.state.liberal_track + game.board.state.fascist_track + 1, game.board.state.failed_votes + 1) ) + voting_text)
+		game.history.append(("Tur %d.%d\n\n" % (game.board.state.liberal_track + game.board.state.fascist_track + 1, game.board.state.failed_votes + 1) ) + voting_text)
 		#log.info(game.history[game.board.state.currentround])
 		voting_aftermath(bot, game, voting_success)
 	else:
@@ -260,7 +260,7 @@ def count_votes(bot, game):
 		game.board.state.nominated_chancellor = None
 		game.board.state.failed_votes += 1
 		bot.send_message(game.cid, voting_text)
-		game.history.append(("Ronda %d.%d\n\n" % (game.board.state.liberal_track + game.board.state.fascist_track + 1, game.board.state.failed_votes) ) + voting_text)
+		game.history.append(("Tur %d.%d\n\n" % (game.board.state.liberal_track + game.board.state.fascist_track + 1, game.board.state.failed_votes) ) + voting_text)
 		#log.info(game.history[game.board.state.currentround])
 		if game.board.state.failed_votes == 3:
 			do_anarchy(bot, game)
@@ -301,7 +301,7 @@ def draw_policies(bot, game):
 		hiddenhistory_text += policy.title() + " "
 	hiddenhistory_text[:-1]
 	# Guardo Historial secreto
-	game.hiddenhistory.append(("*Ronda %d.%d*\nEl presidente %s recibió " % (game.board.state.liberal_track + game.board.state.fascist_track + 1, game.board.state.failed_votes + 1, game.board.state.president.name) ) + hiddenhistory_text)
+	game.hiddenhistory.append(("*Tur %d.%d*\nBaşkan %s'ın çektiği yasalar " % (game.board.state.liberal_track + game.board.state.fascist_track + 1, game.board.state.failed_votes + 1, game.board.state.president.name) ) + hiddenhistory_text)
 	choosePolicyMarkup = InlineKeyboardMarkup(btns)
 	if not game.is_debugging:
 		bot.send_message(game.board.state.president.uid, "Aşağıdaki 3 yasayı desteden çektin. Hangisini çöpe atmak istersin?",
@@ -337,7 +337,7 @@ def choose_policy(update: Update, context: CallbackContext):
 			callback.message.message_id)
 			# remove policy from drawn cards and add to discard pile, pass the other two policies
 			# Grabo en Hidden History que descarta el presidente.
-			game.hiddenhistory.append("Başkan yasa elemesi yaptı " + answer)
+			game.hiddenhistory.append("Başkanın elediği kart " + answer)
 			for i in range(3):
 				if game.board.state.drawn_policies[i] == answer:
 					game.board.discards.append(game.board.state.drawn_policies.pop(i))                                
@@ -353,8 +353,8 @@ def choose_policy(update: Update, context: CallbackContext):
 					"Şansölye %s, Başkan %s'a veto önerdi." % (
 					game.board.state.chancellor.name, game.board.state.president.name))
 
-				btns = [[InlineKeyboardButton("Veto! (öneri kabul edildi)", callback_data=strcid + "_yesveto")],
-				[InlineKeyboardButton("Veto İptal! (önerin reddedildi)", callback_data=strcid + "_noveto")]]
+				btns = [[InlineKeyboardButton("Veto! (öneriyi kabul et)", callback_data=strcid + "_yesveto")],
+				[InlineKeyboardButton("Veto İptal! (öneriyi reddet)", callback_data=strcid + "_noveto")]]
 
 				vetoMarkup = InlineKeyboardMarkup(btns)
 				bot.send_message(game.board.state.president.uid,
@@ -764,7 +764,7 @@ def count_votes_anarquia(bot, game):
 		game.board.state.nominated_chancellor = None
 		bot.send_message(game.cid, voting_text, ParseMode.MARKDOWN)
 		bot.send_message(game.cid, "\nŞimdi konuşamazsın.")
-		game.history.append(("Ronda %d.%d\n\n" % (game.board.state.liberal_track + game.board.state.fascist_track + 1, game.board.state.failed_votes + 1) ) + voting_text)
+		game.history.append(("Tur %d.%d\n\n" % (game.board.state.liberal_track + game.board.state.fascist_track + 1, game.board.state.failed_votes + 1) ) + voting_text)
 		# Avanzo la cantidad del lider asi el lider queda correctamente asignado
 		# Se incrementa como mucho 2 ya que el ultimo incremento lo hace la anarquia
 		for i in range(2 - game.board.state.failed_votes):
@@ -776,7 +776,7 @@ def count_votes_anarquia(bot, game):
 		game.board.state.nominated_president = None
 		game.board.state.nominated_chancellor = None
 		bot.send_message(game.cid, voting_text, ParseMode.MARKDOWN)
-		game.history.append(("Ronda %d.%d\n\n" % (game.board.state.liberal_track + game.board.state.fascist_track + 1, game.board.state.failed_votes + 1) ) + voting_text)
+		game.history.append(("Tur %d.%d\n\n" % (game.board.state.liberal_track + game.board.state.fascist_track + 1, game.board.state.failed_votes + 1) ) + voting_text)
 		#game.board.state.failed_votes == 3
 		
 			
@@ -1035,8 +1035,8 @@ def increment_player_counter(game):
 def shuffle_policy_pile(bot, game):
 	log.info('shuffle_policy_pile called')
 	if len(game.board.policies) < 3:
-		game.history.append("*No habia cartas suficientes en el mazo de políticas asi que he mezclado el resto con el mazo de descarte!*")
-		game.hiddenhistory.append("*No habia cartas suficientes en el mazo de políticas asi que he mezclado el resto con el mazo de descarte!*")
+		game.history.append("*Yasa destesinde yeterli kart kalmadı, ben de kalan kartları çekme destesiyle karıştırdım.!*")
+		game.hiddenhistory.append("* Yasa destesinde yeterli kart kalmadı, ben de kalan kartları çekme destesiyle karıştırdım.!*")
 		game.board.discards += game.board.policies
 		game.board.policies = random.sample(game.board.discards, len(game.board.discards))
 		game.board.discards = []		
